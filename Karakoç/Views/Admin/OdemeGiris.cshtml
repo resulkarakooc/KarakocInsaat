@@ -1,0 +1,63 @@
+﻿@model List<Karakoç.Models.Calisan>
+@{
+    ViewData["Title"] = "OdemeGiris";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Çalışan Ödeme Gir</h2>
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Onay</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        İşleminiz gerçekleşmiştir.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form action="/Admin/KaydetOdeme" method="post" class="karakoç">
+            <div class="mb-3">
+                <label for="CalisanId" class="form-label">Çalışan:</label>
+                <select name="CalisanId" id="CalisanId" class="form-select" required>
+                    <option value="">Çalışan Seçin</option>
+                    @foreach (var calisan in Model)
+                    {
+                        <option value="@calisan.CalısanId">@calisan.Name @calisan.Surname</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="Aciklama" class="form-label">Açıklama:</label>
+                <input type="text" name="Aciklama" id="Aciklama" class="form-control" placeholder="Ödeme açıklaması" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="Tutar" class="form-label">Tutar:</label>
+                <input type="number" name="Tutar" id="Tutar" step="0.01" class="form-control" placeholder="Ödeme tutarı" required />
+            </div>
+
+            <!-- Tarih Seçici -->
+            <div class="mb-3">
+                <label for="Tarih" class="form-label">Tarih:</label>
+                <input type="date" name="Tarih" id="Tarih" class="form-control" required/>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button> <br />
+            <p>@ViewBag.Bilgi</p>
+        </form>
+    </div>
+</main>
+
+

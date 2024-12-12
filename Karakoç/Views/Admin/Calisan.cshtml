@@ -1,0 +1,254 @@
+﻿@model Calisan
+@{
+    ViewData["Title"] = "Çalışan Bilgileri";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    // Mevcut ay ve yıl bilgisi
+    int currentYear = DateTime.Now.Year;
+    int currentMonth = DateTime.Now.Month;
+    double toplam = 0;
+    double toplamm = 0;
+    // Gün sayısını al
+    int dayCount = DateTime.DaysInMonth(currentYear, currentMonth);
+}
+
+
+<!---->
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+
+        <!-- Çalışan Bilgileri -->
+        <h2 class="main-title">@Model.Name @Model.Surname Bilgileri</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Alan</th>
+                        <th>Değer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>İsim</td>
+                        <td>@Model.Name</td>
+                    </tr>
+                    <tr>
+                        <td>Soyisim</td>
+                        <td>@Model.Surname</td>
+                    </tr>
+                    <tr>
+                        <td>İd</td>
+                        <td>@Model.CalısanId</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Kayıt Tarihi</td>
+                        <td>@Model.KayıtTarihi?.ToString("dd.MM.yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <!-- Yevmiye Takvimi -->
+                <div class="col-lg-6 col-12 mb-4">
+                    <h2 class="main-title text-center">Çalışanın Yevmiye Takvimi - @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth) @currentYear</h2>
+
+                    <div class="table-responsive">
+                        @* <style>
+                            /* Tüm radio butonların ortak stilini ayarla */
+                            .btn-group-toggle .btn {
+                                border: 2px solid transparent; /* Varsayılan border */
+                            }
+
+                            /* Tam Gün için yeşil border */
+                            .btn-tam-gun {
+                                border-color: green;
+                            }
+
+                            /* Yarım Gün için sarı border */
+                            .btn-yarim-gun {
+                                border: solid yellow 2px;
+                            }
+
+                            /* Çalışmadı için kırmızı border */
+                            .btn-calismadi {
+                                border: solid red 2px;
+                            }
+                        </style>
+ *@
+                        <table class="table table-striped table-hover table-bordered text-center" style="table-layout: fixed; word-wrap: break-word;">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="width: 30px;">Gün</th>
+                                    <th style="width: 250px;">Çalıştı mı?</th>
+                                </tr>
+                            </thead>
+                           
+
+
+                            <tbody>
+                                @for (int i = 1; i <= dayCount; i++)
+                                {
+                                    var tarih = new DateTime(currentYear, currentMonth, i);
+                                    var yevmiye = Model.Yevmiyelers.FirstOrDefault(y => y.Tarih == tarih.Date);
+
+                                    bool isWorked = yevmiye?.IsWorked ?? false;
+                                    bool isHalfWorked = yevmiye?.IsHalfWorked ?? false;
+
+                                    // Eğer yevmiye verisi yoksa veya çalışmadı durumu varsa, her ikisini de false olarak ayarla
+                                    if (yevmiye == null || (!isWorked && !isHalfWorked))
+                                    {
+                                        isWorked = false;
+                                        isHalfWorked = false;
+                                    }
+                                    @if (isWorked)
+                                    {
+                                        toplam += 1;
+                                    }
+                                    else if (isHalfWorked)
+                                    {
+                                        toplam += 0.5;
+                                    }
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>
+                                            <form action="~/Admin/UpdateYevmiye" method="post" class="d-inline">
+                                                <!-- Yevmiye, CalisanId ve Tarih bilgilerini gizli input olarak gönder -->
+                                                <input type="hidden" name="yevmiyeId" value="@yevmiye?.YevmiyeId" />
+                                                <input type="hidden" name="calisanId" value="@Model.CalısanId" />
+                                                <input type="hidden" name="tarih" value="@tarih.ToString("yyyy-MM-dd")" />
+
+                                                <!-- Radio buttonları ile güncel çalışma durumunu seçme -->
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" style="font-size: 12px;">
+                                                    <!-- Tam Gün -->
+                                                    <label class="btn btn-outline-success btn-sm @((isWorked) ? "active" : "")">
+                                                        <input type="radio" name="workedStatus" value="TamGün" autocomplete="off"
+                                                        @(isWorked ? "checked" : "")> Tam Gün
+                                                    </label>
+                                                    <!-- Yarım Gün -->
+                                                    <label class="btn btn-outline-warning btn-sm @((isHalfWorked) ? "active" : "")">
+                                                        <input type="radio" name="workedStatus" value="YarımGün" autocomplete="off"
+                                                        @(isHalfWorked ? "checked" : "")> Yarım Gün
+                                                    </label>
+                                                    <!-- Çalışmadı -->
+                                                    <label class="btn btn-outline-danger btn-sm @((!isWorked && !isHalfWorked) ? "active" : "")">
+                                                        <input type="radio" name="workedStatus" value="Çalışmadı" autocomplete="off"
+                                                        @((!isWorked && !isHalfWorked) ? "checked" : "")> Çalışmadı
+                                                    </label>
+                                                </div>
+
+                                                <!-- Güncelleme butonu -->
+                                                <button type="submit" class="btn btn-primary btn-sm ms-2">Güncelle</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+
+
+
+                    </div>
+
+                    <div class="alert alert-info mt-3 text-center" role="alert">
+                        Toplam Yevmiye: <strong id="totalYevmiye">@toplam</strong>
+                    </div>
+                </div>
+
+
+
+                <!-- Mesai Takvimi -->
+                <div class="col-lg-6 col-12 mb-4">
+                    <h2 class="main-title text-center">Çalışanın Mesai Takvimi - @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth) @currentYear</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered" style="table-layout: fixed; word-wrap: break-word;">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="width: 30px;">Gün</th>
+                                    <th style="width:250px" class="text-center">Değiştir</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 1; i <= dayCount; i++)
+                                {
+                                    var tarih = new DateTime(currentYear, currentMonth, i);
+                                    var mesai = Model.Mesais.FirstOrDefault(m => m.Tarih == tarih.Date);
+
+                                    <tr>
+                                        <td>@i</td>
+
+                                        @* Null kontrolü ve mesai durumunun işlenmesi *@
+                                        @if (mesai?.IsWorked == true)
+                                        {
+                                            toplamm = toplamm + 0.5;  @* Toplam mesaiyi artır *@
+                                        }
+                                        else if (mesai?.IsWorked == false)
+                                        {
+                                            toplamm = toplamm + 0;  @* Çalışmadıysa toplama eklenmez *@
+                                        }
+
+                                        <td class="text-center">
+                                            <form asp-action="UpdateMesai" asp-controller="Admin" method="post" class="d-inline">
+                                                <input type="hidden" name="mesaiId" value="@mesai?.MesaiId" />
+                                                <input type="hidden" name="calisanId" value="@Model.CalısanId" />
+                                                <input type="hidden" name="tarih" value="@tarih.ToString("yyyy-MM-dd")" />
+
+
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" style="font-size: 12px;">
+                                                    <label class="btn btn-outline-success btn-sm @(mesai?.IsWorked == true ? "active" : "")">
+                                                        <input type="radio" name="workedStatus" value="Yarım" autocomplete="off" @(mesai?.IsWorked == true ? "checked" : "")> Yarım
+                                                    </label>
+                                                    <label class="btn btn-outline-danger btn-sm @((mesai?.IsWorked == null || false ? "active" : ""))">
+                                                        <input type="radio" name="workedStatus" value="Çalışmadı" autocomplete="off" @(mesai?.IsWorked == false ? "checked" : "")> Çalışmadı
+                                                    </label>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary btn-sm ms-2">Değiştir</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="alert alert-info mt-3 text-center" role="alert">
+                        Toplam Mesai Yevmiyesi: <strong>@toplamm</strong>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <!-- Ödemeler -->
+        <h2 class="main-title">Ödeme Bilgileri</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tarih</th>
+                        <th>Miktar</th>
+                        <th>Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var odeme in Model.Odemelers)
+                    {
+                        <tr>
+                            <td>@odeme.Tarih.ToShortDateString()</td>
+                            <td>@odeme.Amount.ToString("C2")</td>
+                            <td>@odeme.Description</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>

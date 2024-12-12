@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Dashboard</h2>
+        <div class="row stat-cards">
+
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon primary">
+                        <i data-feather="bar-chart-2" aria-hidden="true"></i>
+                    </div>
+                    <a href="~/Admin/CalisanList" class="stat-cards-info">
+                        <p class="stat-cards-info__num">@ViewBag.CalisanSayisi</p>
+                        <p class="stat-cards-info__title">Çalışan Kişi Sayısı</p>
+                        <p class="stat-cards-info__progress">
+                            Mevcut Ay
+                        </p>
+                    </a>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon purple">
+                        <i data-feather="file" aria-hidden="true"></i>
+                    </div>
+                    <a href="/Admin/YevmiyeGor" class="stat-cards-info">
+                        <p class="stat-cards-info__num">@ViewBag.TrueYevmiyeSayisi</p>
+                        <p class="stat-cards-info__title">Yevmiye Bulunduğumuz Ay</p>
+                        <p class="stat-cards-info__progress">
+                            Mevcut Ay
+                        </p>
+                    </a>
+                </article>
+            </div>
+
+           
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon primary">
+                        <i data-feather="bar-chart-2" aria-hidden="true"></i>
+                    </div>
+                    <a href="~/Admin/MesaiGor" class="stat-cards-info">
+                        <p class="stat-cards-info__num">@ViewBag.MesaiYevmiyeleri</p>
+                        <p class="stat-cards-info__title">Mesai Yevmiyesi Mevcut Ay</p>
+                        <p class="stat-cards-info__progress">
+                            Mevcut Ay
+                        </p>
+                    </a>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon primary">
+                        <i data-feather="bar-chart-2" aria-hidden="true"></i>
+                    </div>
+                    <a href="~/Admin/YevmiyeGor" class="stat-cards-info">
+                        <p class="stat-cards-info__num">@ViewBag.ToplamYevmiye </p>
+                        <p class="stat-cards-info__title">Toplam Yevmiye Mevcut Ay</p>
+                        <p class="stat-cards-info__progress">
+                            Mevcut Ay
+                        </p>
+                    </a>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon primary">
+                        <i data-feather="bar-chart-2" aria-hidden="true"></i>
+                    </div>
+                    <a href="~/Admin/Giderler" class="stat-cards-info">
+                        <p class="stat-cards-info__num"> @ViewBag.TotalGiderAmount ₺ </p>
+                        <p class="stat-cards-info__title">Bu Ayki Mevcut Gider</p>
+                        <p class="stat-cards-info__progress">
+                            Mevcut Ay
+                        </p>
+                    </a>
+                </article>
+            </div>
+            
+            
+        </div>
+
+    </div>
+</main>

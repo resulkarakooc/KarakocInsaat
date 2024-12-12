@@ -1,0 +1,157 @@
+﻿@model List<Karakoç.Models.Yevmiyeler>
+@{
+    ViewData["Title"] = "YevmiyeGor";
+    Layout = "~/Views/Shared/_MimarLayout.cshtml";
+}
+
+<!-- jQuery dahil et -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<main class="" id="">
+
+    <div class="">
+        <h2 class="main-title">Çalışanların Yevmiye Bilgisi</h2>
+
+        <!-- Yıl ve Ay seçimi için dropdown menüler -->
+        <div style="margin-bottom:20px;">
+            <label for="yearSelect" style="color:white;">Yıl Seçin:</label>
+            <select id="yearSelect">
+                <!-- Yılları doldur -->
+                <script>
+                    const currentYear = new Date().getFullYear();
+                    for (let year = currentYear - 5; year <= currentYear + 1; year++) {
+                        $('#yearSelect').append(new Option(year, year));
+                    }
+                    $('#yearSelect').val(currentYear); // Varsayılan olarak mevcut yılı seç
+                </script>
+            </select>
+
+            <label for="monthSelect" style="color:white;">Ay Seçin:</label>
+            <select id="monthSelect">
+                <!-- Ayları doldur -->
+                <script>
+                    const months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+                    months.forEach((month, index) => {
+                        $('#monthSelect').append(new Option(month, index + 1));
+                    });
+                    $('#monthSelect').val(new Date().getMonth() + 1); // Varsayılan olarak mevcut ayı seç
+                </script>
+            </select>
+        </div>
+
+        <!-- Tablo alanı -->
+        <div id="tableContainer"></div>
+    </div>
+
+    <!-- Link buttonunun href kısmını dinamik hale getirme -->
+    <a id="exportLink" class="btn btn-success" href="#">Excel Olarak İndir</a>
+
+</main>
+
+
+
+<script>
+    // Sayfa yüklendiğinde seçilen yıl ve ayı kontrol et ve linki güncelle
+    function updateExportLink() {
+        const selectedYear = $('#yearSelect').val();
+        const selectedMonth = $('#monthSelect').val();
+
+        // Excel linkini dinamik olarak oluştur
+        const exportLink = `ExportHakedis?ay=${selectedMonth}&yil=${selectedYear}`;
+        $('#exportLink').attr('href', exportLink);
+    }
+
+    // Dropdown menülerde değişiklik olduğunda linki güncelle
+    $('#yearSelect, #monthSelect').change(function () {
+        updateExportLink();
+    });
+
+    // Sayfa yüklendiğinde linki ilk defa güncelle
+    updateExportLink();
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        let allData = []; // Tüm verileri burada tutacağız
+
+        // Verileri al
+        $.ajax({
+            url: '@Url.Action("GetYevmiye", "Sef")', // Controller ve action'ı ayarlayın
+            type: 'GET',
+            success: function (data) {
+                allData = data.$values || [];
+                updateTable(); // Başlangıçta tabloyu oluştur
+            },
+            error: function (xhr, status, error) {
+                console.error("Veriler alınırken hata oluştu:", error);
+            }
+        });
+
+        // Yıl veya Ay değiştirildiğinde tabloyu güncelle
+        $('#yearSelect, #monthSelect').change(updateTable);
+
+        // Tabloyu güncelleme fonksiyonu
+        function updateTable() {
+            const selectedYear = parseInt($('#yearSelect').val());
+            const selectedMonth = parseInt($('#monthSelect').val());
+            createTable(selectedYear, selectedMonth);
+        }
+
+        // Tablo oluşturma fonksiyonu
+        function createTable(year, month) {
+            const günSayısı = new Date(year, month, 0).getDate(); // Seçilen ayın gün sayısını al
+            let tableHtml = `<table class="table table-bordered table-primary">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Çalışan</th>`;
+            for (let i = 1; i <= günSayısı; i++) {
+                tableHtml += `<th>${i}</th>`; // Gün başlıkları
+            }
+            tableHtml += `   </tr>
+                                                    </thead>
+                                                    <tbody>`;
+
+            // Çalışan grupları oluştur
+            const groupedData = groupDataByEmployee(allData, year, month);
+            $.each(groupedData, function (calisan, yevmiyeData) {
+                tableHtml += `<tr><td>${calisan}</td>`;
+                for (let day = 1; day <= günSayısı; day++) {
+                    const isWorked = yevmiyeData[day] && yevmiyeData[day].isWorked;
+                    const isHalfWorked = yevmiyeData[day] && yevmiyeData[day].isHalfWorked;
+
+                    // Yarım çalıştıysa yeşil, tam çalıştıysa mavi
+                    if (isHalfWorked === true) {
+                        tableHtml += `<td style="background-color: green;"></td>`;
+                    } else {
+                        tableHtml += `<td style="background-color: ${isWorked ? "blue" : "transparent"}"></td>`;
+                    }
+                }
+                tableHtml += `</tr>`;
+            });
+
+            tableHtml += `</tbody></table>`;
+            $('#tableContainer').html(tableHtml); // Tabloyu sayfaya ekle
+        }
+
+        // Verileri çalışana göre gruplama fonksiyonu
+        function groupDataByEmployee(data, year, month) {
+            const grouped = {};
+            data.forEach(item => {
+                const date = new Date(item.tarih);
+                const calisan = item.calisanAd + " " + item.calisanSoyad;
+
+                if (date.getFullYear() === year && date.getMonth() + 1 === month) {
+                    if (!grouped[calisan]) grouped[calisan] = {};
+
+                    // Hem tam çalışma hem yarım çalışma bilgilerini ekle
+                    grouped[calisan][date.getDate()] = {
+                        isWorked: item.isWorked,
+                        isHalfWorked: item.isHalfWorked // Yarım çalışmayı da ekleyin
+                    };
+                }
+            });
+            return grouped;
+        }
+    });
+</script>

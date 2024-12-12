@@ -1,0 +1,43 @@
+﻿@model List<GelirTablosu>
+@{
+    ViewData["Title"] = "Alınan";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    decimal toplam = 0;
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Alınanlar</h2>
+
+
+        <table class="table table-bordered table-primary">
+            <thead>
+                <tr>
+                 
+                    <th>Tarih</th>
+                    <th>Miktar</th>
+                    <th>Açıklama</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                @foreach (var odeme in Model)
+                
+                {
+                    <tr>
+                        <td>@odeme.AlınanTarih?.ToString("dd.MM.yyyy")</td>
+                        <td>@odeme.AlınanMiktar.ToString("C2")</td>
+                        <td>@odeme.Aciklama</td>
+
+                    </tr>
+                    toplam = toplam + @odeme.AlınanMiktar;
+
+                    
+                }
+            </tbody>
+        </table>
+        <div class="text-end mt-3">
+            <strong style="color:gray">Toplam Miktar: @toplam.ToString("C2")</strong> <!-- Para formatında gösterim -->
+        </div>
+    </div>
+</main>

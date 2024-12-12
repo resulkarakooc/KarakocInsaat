@@ -1,0 +1,88 @@
+﻿
+
+@model List<Karakoç.Models.Odemeler>
+@{
+    ViewData["Title"] = "Odemeler";
+    Layout = "~/Views/Shared/_OrLayout.cshtml";
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Aldığım Ödemeler</h2>
+        <div class="row stat-cards">
+            <div class="col-md-6 col-xl-3">
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-lg-9">
+
+
+
+                    <style>
+                        .table-container {
+                            margin: 20px 0; /* Tablonun üst ve altına mesafe */
+                        }
+
+                        .table {
+                            border-collapse: collapse;
+                            width: 100%;
+                        }
+
+                            .table th, .table td {
+                                border: 1px solid #dee2e6; /* Hücre kenarlıkları */
+                                text-align: center; /* Hücre içi yazı ortalama */
+                                padding: 8px; /* Hücre içi boşluk */
+                            }
+
+                            .table tfoot {
+                                background-color: #f8f9fa; /* Footer rengi */
+                            }
+
+                            .table th {
+                                background-color: black; /* Başlık hücre rengi */
+                            }
+                    </style>
+
+                    <div class="table-container">
+                        <table class="table table-bordered table-dark">
+                            <thead>
+                                <tr>
+                                    <th>Ödeme Tarihi</th>
+                                    <th>Açıklama</th>
+                                    <th>Miktar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    decimal toplamMiktar = 0;
+                                    foreach (var odeme in Model)
+                                    {
+                                        <tr>
+                                            <td>@odeme.Tarih.ToString("dd.MM.yyyy")</td>
+                                            <td>@odeme.Description</td>
+                                            <td>@odeme.Amount.ToString("C")</td>
+                                        </tr>
+                                        toplamMiktar += odeme.Amount;
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Toplam</strong></td>
+                                    <td><strong>@toplamMiktar.ToString("C")</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+

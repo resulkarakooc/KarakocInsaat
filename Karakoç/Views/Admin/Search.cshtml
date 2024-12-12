@@ -1,0 +1,46 @@
+﻿@model List<Calisan>
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container mt-4">
+        <h2 class="main-title text-center mb-4">Arama Sonuçları</h2>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p class="text-center text-danger" style="font-size:18px;">Sonuç bulunamadı.</p>
+        }
+        else
+        {
+            <table class="table table-striped table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="text-center" style="font-size:18px;">Ad Soyad</th>
+                        <th class="text-center" style="font-size:18px;">TC Kimlik</th>
+                        <th class="text-center" style="font-size:18px;">Doğum Tarihi</th>
+                        <th class="text-center" style="font-size:18px;">E-mail</th>
+                        <th class="text-center" style="font-size:18px;">Çalışma Durumu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var calisan in Model)
+                    {
+                        <tr>
+                            <td class="text-center" style="font-size:15px;"> <a href="~/Admin/Calisan/@calisan.CalısanId"> @calisan.Name @calisan.Surname </a>  </td>
+                            <td class="text-center" style="font-size:15px;">@calisan.TcKimlik</td>
+                            <td class="text-center" style="font-size:15px;">@calisan.BirthDate?.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center" style="font-size:15px;">@calisan.Email</td>
+                            <td class="text-center" style="font-size:15px;">
+                                @(calisan.Verify.HasValue ? (calisan.Verify.Value ? "Evet" : "Hayır") : "Bilinmiyor")
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</main>

@@ -1,0 +1,165 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Karakoç
+build_property.RootNamespace = Karakoç
+build_property.ProjectDir = C:\Users\Resul Karakoç\source\Karakoç\Karakoç\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Resul Karakoç\source\Karakoç\Karakoç
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/Alınan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWzEsW5hbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/Calisan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ2FsaXNhbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/CalisanList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ2FsaXNhbkxpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/GelirGiris.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cR2VsaXJHaXJpcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/MesaiGiris.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWVzYWlHaXJpcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/MesaiGor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWVzYWlHb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/OdemeGiris.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cT2RlbWVHaXJpcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/OdemeGor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cT2RlbWVHb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/YevmiyeGiris.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cWWV2bWl5ZUdpcmlzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Admin/YevmiyeGor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cWWV2bWl5ZUdvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Calisan/AnaSayfa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FsaXNhblxBbmFTYXlmYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Calisan/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FsaXNhblxIb21lLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Calisan/Mesailerim.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FsaXNhblxNZXNhaWxlcmltLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Calisan/Odemeler.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FsaXNhblxPZGVtZWxlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Calisan/Puantajım.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FsaXNhblxQdWFudGFqxLFtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Login/Giris.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cR2lyaXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Login/KayıtOl.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cS2F5xLF0T2wuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Login/PasswordReset.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUGFzc3dvcmRSZXNldC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Organizer/GetGider.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JnYW5pemVyXEdldEdpZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Organizer/Giderler.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JnYW5pemVyXEdpZGVybGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Organizer/Yevmiyeler.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JnYW5pemVyXFlldm1peWVsZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Sef/Calisan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VmXENhbGlzYW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Sef/CalisanList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VmXENhbGlzYW5MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Sef/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VmXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Sef/MesaiGor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VmXE1lc2FpR29yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Sef/YevmiyeGor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VmXFlldm1peWVHb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Sef/Ödemeler.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VmXMOWZGVtZWxlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Shared/_HomeLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ib21lTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Shared/_KarakocLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9LYXJha29jTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Shared/_MimarLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9NaW1hckxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Resul Karakoç/source/Karakoç/Karakoç/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-caqh2ls0qy

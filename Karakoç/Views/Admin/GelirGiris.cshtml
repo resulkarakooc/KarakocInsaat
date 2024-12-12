@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewData["Title"] = "GelirGiris";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Gelir Ekleme Ekranı</h2>
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Onay</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        İşleminiz gerçekleşmiştir.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form action="/Admin/KaydetGelir" method="post" class="karakoç">
+          
+
+            <div class="mb-3">
+                <label for="Aciklama" class="form-label">Açıklama:</label>
+                <input type="text" name="Aciklama" id="Aciklama" class="form-control" placeholder="Gelir açıklaması" required/>
+            </div>
+
+            <div class="mb-3">
+                <label for="Tutar" class="form-label">Tutar:</label>
+                <input type="number" name="miktar" id="Tutar" step="0.01" class="form-control" placeholder="Gelir tutarı" min="10" required />
+            </div>
+
+            <!-- Tarih Seçici -->
+            <div class="mb-3">
+                <label for="Tarih" class="form-label">Tarih:</label>
+                <input type="date" name="Tarih" id="Tarih" class="form-control"  required/>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button> <br />
+            @if(ViewBag.Info != null)
+            {
+                <p>@ViewBag.Info</p>
+            }
+        </form>
+
+        <a class="btn btn-warning" href="~/Admin/Alınan">Alınan Ödemeler</a>
+    </div>
+</main>

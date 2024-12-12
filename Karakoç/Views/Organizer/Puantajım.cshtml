@@ -1,0 +1,175 @@
+﻿
+
+@model List<Yevmiyeler>
+@{
+    ViewData["Title"] = "Puantajım";
+    Layout = "~/Views/Shared/_OrLayout.cshtml";
+    var currentmonth = DateTime.Now.Month;
+    var currentyear = DateTime.Now.Year;
+    List<string> aylar = new List<string>
+        {
+            "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+            "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+        };
+
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+    /* CSS stillerini burada tutabilirsiniz */
+    .red-background {
+        background-color: #11111d !important;
+        color: white !important;
+    }
+
+    .blue-background {
+        background-color: blue !important;
+        color: white !important;
+    }
+
+    .green-background {
+        background-color: green !important;
+        color: white !important;
+    }
+
+    .grey-background {
+        background-color: #11111d !important;
+        color: white !important;
+    }
+
+    .empty {
+        background-color: #11111d !important;
+        color: white !important;
+    }
+
+    .calendar-table td {
+        text-align: center; /* Yatayda ortalar */
+        vertical-align: middle; /* Dikeyde ortalar */
+        height: 50px; /* Hücre yüksekliği ayarlama */
+    }
+
+</style>
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Yevmiye Takip</h2>
+
+        <!-- Ay ve Yıl Seçimi -->
+        <div class="form-group d-flex mb-4" style="gap: 10px; align-items: center;">
+            <!-- Boşluk ve hizalama ayarlandı -->
+            <label for="month" style="margin: 0; color:gray; font-size: 14px;">Ay:</label> <!-- Yazı boyutu küçültüldü -->
+            <select id="month" class="form-control" style="width: 80px; font-size: 14px;">
+                <!-- Genişlik ve yazı boyutu küçültüldü -->
+                @for (int i = 0; i < aylar.Count; i++)
+                {
+                    if (currentmonth == i + 1)
+                    {
+                        <option selected value="@($"{i+1 }")">@aylar[i]</option>
+                    }
+                    else
+                    {
+                        <option value="@($"{i+1}")">@aylar[i]</option>
+                    }
+                }
+            </select>
+
+            <label for="year" style="margin: 0; font-size: 14px; color:gray;">Yıl:</label> <!-- Yazı boyutu küçültüldü -->
+            <select id="year" class="form-control" style="width: 80px; font-size: 14px;">
+                <!-- Genişlik ve yazı boyutu küçültüldü -->
+                <option value="2023">2023</option>
+                <option selected value="2024">2024</option>
+                <option value="2025">2025</option>
+            </select>
+        </div>
+
+
+        <div class="table-wrapper">
+            <table class="calendar-table table table-bordered table-success">
+                <thead>
+                    <tr>
+                        <th>Pzt</th>
+                        <th>Salı</th>
+                        <th>Çarş</th>
+                        <th>Perş</th>
+                        <th>Cuma</th>
+                        <th>Ctesi</th>
+                        <th>Pazar</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+    let allData = [];
+
+    $(document).ready(function () {
+        // Sayfa yüklendiğinde tüm verileri al
+        $.ajax({
+            url: '/Organizer/GetMyPuantaj',
+            type: 'GET',
+            success: function (response) {
+                allData = response.$values || [];
+                renderCalendar(allData, new Date().getMonth() + 1, new Date().getFullYear());
+            },
+            error: function (xhr, status, error) {
+                console.error("Veriler alınırken hata oluştu:", error);
+            }
+        });
+
+        // Ay veya yıl seçildiğinde filtrele
+        $("#month, #year").change(function () {
+            let month = parseInt($("#month").val());
+            let year = parseInt($("#year").val());
+            let filteredData = allData.filter(item => {
+                let date = new Date(item.tarih);
+                return date.getMonth() + 1 === month && date.getFullYear() === year;
+            });
+            renderCalendar(filteredData, month, year);
+        });
+    });
+
+    function renderCalendar(data, month, year) {
+        $(".calendar-table tbody").empty();
+
+        // Ay ve yıl bilgisiyle ilk günü belirle
+        let firstDayOfMonth = new Date(year, month - 1, 1);
+        let daysInMonth = new Date(year, month, 0).getDate();
+        let startDayOfWeek = (firstDayOfMonth.getDay() + 6) % 7; // Pazartesiyi haftanın ilk günü yapar
+
+        let dayCounter = 1;
+
+        // Takvim yapısını oluştur
+        for (let i = 0; i < 6; i++) {
+            let row = $("<tr></tr>");
+            for (let j = 0; j < 7; j++) {
+                let cell = $("<td></td>");
+                if (i === 0 && j < startDayOfWeek || dayCounter > daysInMonth) {
+                    cell.addClass("empty"); // Boş hücreler
+                } else {
+                    let currentDay = new Date(year, month - 1, dayCounter);
+                    let yevmiye = data.find(d => new Date(d.tarih).toDateString() === currentDay.toDateString());
+
+                    // Renk belirleme
+                    if (!yevmiye) {
+                        cell.addClass("empty"); // Veriler yoksa boş bırak
+                    } else if (yevmiye.isWorked === true) {
+                        cell.addClass("blue-background"); // Tam gün çalıştıysa mavi
+                    } else if (yevmiye.isHalfWorked === true) {
+                        cell.addClass("green-background"); // Yarım gün çalıştıysa yeşil
+                    } else {
+                        cell.addClass("grey-background"); // Çalışmadıysa şeffaf
+                    }
+
+                    cell.text(dayCounter);
+                    dayCounter++;
+                }
+                row.append(cell);
+            }
+            $(".calendar-table tbody").append(row);
+        }
+    }
+</script>

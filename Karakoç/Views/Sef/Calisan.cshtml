@@ -1,0 +1,138 @@
+﻿@model Calisan
+@{
+    ViewData["Title"] = "Calisan";
+    Layout = "~/Views/Shared/_MimarLayout.cshtml";
+    // Mevcut ay ve yıl bilgisi
+    int currentYear = DateTime.Now.Year;
+    int currentMonth = DateTime.Now.Month;
+
+    // Gün sayısını al
+    int dayCount = DateTime.DaysInMonth(currentYear, currentMonth);
+
+}
+
+
+<!---->
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+
+        <!-- Çalışan Bilgileri -->
+        <h2 class="main-title">@Model.Name @Model.Surname Bilgileri</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Alan</th>
+                        <th>Değer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>İsim</td>
+                        <td>@Model.Name</td>
+                    </tr>
+                    <tr>
+                        <td>Soyisim</td>
+                        <td>@Model.Surname</td>
+                    </tr>
+                    <tr>
+                        <td>TC Kimlik No</td>
+                        <td>@Model.TcKimlik</td>
+                    </tr>
+                    <tr>
+                        <td>Çalışıyor mu?</td>
+                        @if (Model.Verify != null)
+                        {
+                            if (Model.Verify == true)
+                            {
+                                <td>Aktif Çalışan</td>
+                            }
+                            else
+                            {
+                                <td>Pasif Çalışan</td>
+                            }
+                        }
+                        else
+                        {
+                            <td>Bilgi Yok</td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Kayıt Tarihi</td>
+                        <td>@Model.KayıtTarihi?.ToString("dd.MM.yyyy")</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <!-- Yevmiye Tablosu -->
+                <div class="col-lg-6 col-12 mb-4">
+                    <h2 class="main-title">Çalışanın @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth) Ayı Yevmiyeleri</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered" style="table-layout: fixed; word-wrap: break-word;">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="width: 50px;">Gün</th>
+                                    <th style="width: 150px;">Çalıştı mı?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 1; i <= dayCount; i++)
+                                {
+                                    var tarih = new DateTime(currentYear, currentMonth, i);
+                                    var yevmiye = Model.Yevmiyelers.FirstOrDefault(y => y.Tarih == tarih.Date);
+                                    <tr>
+                                        <td class="text-center">@i</td>
+                                        <td class="text-center" style="background-color: @(yevmiye?.IsWorked == true ? "#1e81b0" : "#F2DEDE"); color: white;">
+                                            <span>@(yevmiye?.IsWorked == true ? "✔" : "✘")</span>
+                                        </td>
+                                    </tr>
+                                }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Mesai Tablosu -->
+                <div class="col-lg-6 col-12 mb-4">
+                    <h2 class="main-title">Çalışanın @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth) Ayı Mesaileri</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered" style="table-layout: fixed; word-wrap: break-word;">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="width: 50px;">Gün</th>
+                                    <th style="width: 150px;">Çalıştı mı?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 1; i <= dayCount; i++)
+                                {
+                                    var tarih = new DateTime(currentYear, currentMonth, i);
+                                    var mesai = Model.Mesais.FirstOrDefault(m => m.Tarih == tarih.Date);
+                                    <tr>
+                                        <td class="text-center">@i</td>
+                                        <td class="text-center" style="background-color: @(mesai?.IsWorked == true ? "#1e81b0" : "#F2DEDE"); color: white;">
+                                            <span>@(mesai?.IsWorked == true ? "✔" : "✘")</span>
+                                        </td>
+                                    </tr>
+                                }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</main>

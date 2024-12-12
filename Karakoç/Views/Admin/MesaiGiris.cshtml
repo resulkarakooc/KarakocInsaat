@@ -1,0 +1,41 @@
+﻿@model List<Karakoç.Models.Calisan>
+
+@{
+    ViewData["Title"] = "MesaiGiris";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Çalışanların Mesai Bilgisi</h2>
+
+        <form method="post" action="/Admin/MesaiKaydet">
+            <div class="form-group" style="text-align: right; margin-bottom: 20px;">
+                <label class="main-title" for="tarih">Tarih Seçin:</label>
+                <input type="date" id="tarih" name="Tarih" class="form-control" required style="display: inline-block; width: 200px;" />
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Çalışan isim ve soyisim</th>
+                        <th>Çalıştı mı?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var calisan in Model)
+                    {
+                        <tr>
+                            <td>@calisan.Name @calisan.Surname</td>
+                            <td>
+                                <input type="checkbox" name="isWorked" value="@calisan.CalısanId" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        </form>
+    </div>
+</main>

@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "CalisanList";
+    Layout = "~/Views/Shared/_MimarLayout.cshtml";
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Çalışanların Listesi</h2>
+
+        <table class="table table-bordered table-primary">
+            <thead>
+                <tr>
+                    <th>isim Listesi</th>
+                    <th>Kayıt Tarihi</th>
+                    <th>Çalışıyor mu?</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var calisan in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("Calisan","Sef", new { id = calisan.CalısanId })">
+                                @calisan.Name @calisan.Surname
+                            </a>
+                        </td>
+                        <td>@calisan.KayıtTarihi?.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            @if (calisan.Verify != null)
+                            {
+                                if ((bool)calisan.Verify)
+                                {
+                                    <a href="#" class="btn btn-success  btn-disabled">Aktif Çalışan</a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="btn btn-warning  btn-disabled">Pasif Çalışan</a>
+                                }
+                            }
+                            else
+                            {
+                                <a href="##" class="btn btn-Danger">!! Hata !!</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br /> <br />
+        <a class="btn btn-success" href="~/Sef/ExportCalisan">Excel Olarak İndir</a>
+    </div>
+</main>
+
+
+
+

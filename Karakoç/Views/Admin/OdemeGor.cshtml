@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "OdemeGor";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+@{
+    ViewData["Title"] = "Ödeme Görüntüle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- jQuery dahil et -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<main>
+    <div>
+        <h2 class="main-title">Çalışanların Ödemee Bilgisi</h2>
+
+        <!-- Yıl ve Ay seçimi için dropdown menüler -->
+        <div style="margin-bottom:20px;">
+            <label for="yearSelect" style="color:white;">Yıl Seçin:</label>
+            <select id="yearSelect">
+                <script>
+                    const currentYear = new Date().getFullYear();
+                    for (let year = currentYear - 5; year <= currentYear + 1; year++) {
+                        $('#yearSelect').append(new Option(year, year));
+                    }
+                    $('#yearSelect').val(currentYear); // Varsayılan olarak mevcut yılı seç
+                </script>
+            </select>
+
+            <label for="monthSelect" style="color:white;">Ay Seçin:</label>
+            <select id="monthSelect">
+                <script>
+                    const months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+                    months.forEach((month, index) => {
+                        $('#monthSelect').append(new Option(month, index + 1));
+                    });
+                    $('#monthSelect').val(new Date().getMonth() + 1); // Varsayılan olarak mevcut ayı seç
+                </script>
+            </select>
+        </div>
+
+        <!-- Tablo alanı -->
+        <div id="tableContainer"></div>
+    </div>
+</main>
+
+<script>
+    $(document).ready(function () {
+        let allData = []; // Tüm ödeme verilerini burada saklayacağız.
+
+        // Verileri al
+        $.ajax({
+            url: '@Url.Action("GetOdeme", "Admin")', // Controller ve action'ı ayarlayın
+            type: 'GET',
+            success: function (data) {
+                console.log(data);
+
+                // JSON içindeki $values dizisinden sadece gerçek ödeme kayıtlarını seç
+                allData = data.$values
+
+                // Tabloyu başlangıçta oluştur
+                updateTable();
+            },
+            error: function (xhr, status, error) {
+                console.error("Veriler alınırken hata oluştu:", error);
+            }
+        });
+
+        // Yıl veya Ay değiştirildiğinde tabloyu güncelle
+        $('#yearSelect, #monthSelect').change(updateTable);
+
+        // Tabloyu güncelleme fonksiyonu
+        function updateTable() {
+            const selectedYear = parseInt($('#yearSelect').val());
+            const selectedMonth = parseInt($('#monthSelect').val());
+            createTable(selectedYear, selectedMonth);
+        }
+
+        // Tabloyu oluşturma fonksiyonu
+        function createTable(year, month) {
+            let tableHtml = `<table class="table table-bordered table-primary">
+                                        <thead>
+                                            <tr>
+                                                <th>Çalışan</th>
+                                                <th>Tarih</th>
+                                                <th>Tutar</th>
+                                                <th>Açıklama</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
+
+            // Seçilen yıl ve ay için filtrelenmiş verileri kullan
+            const filteredData = allData.filter(item => {
+                const date = new Date(item.tarih);
+                return date.getFullYear() === year && date.getMonth() + 1 === month;
+            });
+
+            // Tabloda verileri göster
+            filteredData.forEach(item => {
+                tableHtml += `<tr>
+                                        <td>${item.calisanAd} ${item.calisanSoyad} </td>
+                                        <td>${new Date(item.tarih).toLocaleDateString()}</td>
+                                            <td>${item.amount} ₺</td>
+                                        <td>${item.description}</td>
+                                      </tr>`;
+            });
+
+            tableHtml += `</tbody></table>`;
+            $('#tableContainer').html(tableHtml); // Tabloyu sayfaya ekle
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<!-- ! Main -->
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Sisteme Hoşgeldin @ViewBag.UserName</h2>
+        <div class="row stat-cards">
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon primary">
+                        <i data-feather="bar-chart-2" aria-hidden="true"></i>
+                    </div>
+                    <a href="~/Calisan/Puantajım" class="stat-cards-info">
+                        <p class="stat-cards-info__num">@ViewBag.WorkedDays</p>
+                        <p class="stat-cards-info__title">Adet Yevmiye</p>
+                        <p class="stat-cards-info__progress">
+                            <span class="stat-cards-info__profit success">
+                                <i data-feather="trending-up" aria-hidden="true"></i>
+                            </span>
+                            Mevcut ay
+                        </p>
+                    </a>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon warning">
+                        <i data-feather="file" aria-hidden="true"></i>
+                    </div>
+                    <a href="~/Calisan/Mesailerim" class="stat-cards-info">
+                        <p class="stat-cards-info__num">@ViewBag.WorkedDaysMesai</p>
+                        <p class="stat-cards-info__title">Adet Mesai Yevmiyesi</p>
+                        <p class="stat-cards-info__progress">
+
+                            Mevcut ay
+                        </p>
+                    </a>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon purple">
+                        <i data-feather="file" aria-hidden="true"></i>
+                    </div>
+                    <div class="stat-cards-info">
+                        <p class="stat-cards-info__num">@ViewBag.Total</p>
+                        <p class="stat-cards-info__title">Toplam Yevmiye</p>
+                        <p class="stat-cards-info__progress">
+
+                            Mevcut ay
+                        </p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon success">
+                        <i data-feather="feather" aria-hidden="true"></i>
+                    </div>
+                    <a href="~/Calisan/Odemeler" class="stat-cards-info">
+                        <p class="stat-cards-info__num">@ViewBag.Miktar.ToString("C2")</p>
+                        <p class="stat-cards-info__title">Bu Ay Alınan Avans</p>
+                        <p class="stat-cards-info__progress">
+                            Mevcut ay
+                        </p>
+                    </a>
+                </article>
+            </div>
+        </div>
+
+    </div>
+</main>
+<!-- ! Footer -->
+<footer class="footer">
+    <div class="container footer--flex">
+        <div class="footer-start">
+            <p>
+                2024 © Karakoç Dashboard - <a href="https://www.codebyte.com.tr" target="_blank">Karakoç Yazılım</a>
+            </p>
+        </div>
+        <ul class="footer-end">
+            <li><a href="##">About</a></li>
+            <li><a href="##">Support</a></li>
+            <li><a href="##">Puchase</a></li>
+        </ul>
+    </div>
+</footer>
+

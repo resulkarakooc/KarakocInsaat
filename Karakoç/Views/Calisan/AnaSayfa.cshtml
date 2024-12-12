@@ -1,0 +1,63 @@
+﻿@model List<Karakoç.Models.Yevmiyeler>
+
+@{
+    ViewData["Title"] = "AnaSayfa";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çalışan Listesi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    @*<link rel="stylesheet" href="/css/site.css" />*@
+</head>
+
+<body>
+
+<h2>Yevmiye Bilgileri</h2>
+
+<h3>@ViewBag.UserName @ViewBag.UserSurName</h3>
+<h2>@ViewBag.UserEmail</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Çalıştı mı?</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var yevmiye in Model)
+            {
+                <tr>
+                    <td>@yevmiye.Tarih?.ToString("yyyy-MM-dd")</td> <!-- Tarih formatı -->
+                    <td>
+                        @if (yevmiye.IsWorked.HasValue)
+                        {
+                            if (yevmiye.IsWorked.Value)
+                            {
+                                <span style="color: green; font-size:20px; font-weight: bold;">&#10003;</span> <!-- Yeşil tik -->
+                            }
+                            else
+                            {
+                                <span style="color: red;  font-size:20px; font-weight: bold">&#10007;</span> <!-- Kırmızı çarpı -->
+                            }
+                        }
+                        else
+                        {
+                            <span style="color: gray;">Bilinmiyor</span> <!-- Null durum için -->
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    </body>
+    </html>
+
+

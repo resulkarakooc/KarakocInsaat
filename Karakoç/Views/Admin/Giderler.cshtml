@@ -1,0 +1,139 @@
+﻿@model List<Giderler>
+@{
+    ViewData["Title"] = "Giderler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main>
+    <h2 class="main-title">Giderler</h2>
+
+    <!-- Yıl ve Ay Filtreleme Dropdown Menüsü -->
+    <div style="margin-bottom:20px;">
+        <label for="yearSelect" style="color:white; margin-right: 10px;">Yıl Seçin:</label>
+        <select id="yearSelect" style="margin-right: 20px;">
+            <!-- Yıllar burada dinamik olarak yüklenecek -->
+        </select>
+
+        <label for="monthSelect" style="color:white; margin-right: 10px;">Ay Seçin:</label>
+        <select id="monthSelect" style="margin-right: 20px;">
+            <!-- Aylar burada dinamik olarak yüklenecek -->
+        </select>
+
+        <button class="btn btn-outline-success" onclick="applyFilters()">Filtrele</button>
+    </div>
+
+    <!-- Giderler Tablosu -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Açıklama</th>
+                <th>Tutar</th>
+                <th>Çalışan</th>
+                <th>Tarih</th>
+                <th>Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var gider in Model)
+                {
+                    <tr>
+                        <td>@gider.Description</td>
+                        <td>@gider.Amount.ToString("C2")</td> <!-- Tutar para formatında -->
+                        <td>@gider.Calisan.Name @gider.Calisan.Surname</td>
+                        <td>@gider.Tarih.ToString("dd/MM/yyyy")</td> <!-- Tarih formatında -->
+                        <td>
+                            <a href="javascript:void(0);"
+                               onclick="confirmDelete('@Url.Action("GiderDelete", "Organizer", new { id = gider.GiderId })')"
+                               class="btn btn-danger btn-sm">Sil</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Henüz gider kaydı yok.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Toplam Tutar -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="alert alert-info mt-3" role="alert">
+            <strong>Seçilen Ayın Toplam Gideri:</strong> @Model.Sum(x => x.Amount).ToString("C2") TL
+        </div>
+
+        <!-- Ödeme Yapan Kişiler -->
+        <div class="alert alert-info mt-3">
+            <strong>Ödeme Yapan Kişiler:</strong>
+            <ul>
+                @{
+                    var groupedByCalisan = Model.GroupBy(g => g.Calisan)
+                    .Select(g => new
+                    {
+                        Name = g.Key.Name + " " + g.Key.Surname,
+                        TotalAmount = g.Sum(x => x.Amount)
+                    });
+
+                    foreach (var person in groupedByCalisan)
+                    {
+                        <li>@person.Name: @person.TotalAmount.ToString("C2") TL</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <!-- Gider Ekle Butonu -->
+    <div class="mt-4">
+        <button class="btn btn-primary me-2" onclick="GiderGir()">Gider Ekle</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- JavaScript -->
+    <script>
+        $(document).ready(function () {
+            // Sunucudan gelen seçili yıl ve ay değerlerini al
+            const selectedYear = @ViewBag.SelectedYear;
+            const selectedMonth = @ViewBag.SelectedMonth;
+            const currentYear = new Date().getFullYear();
+
+            // Yıl Dropdown Menüsünü Doldur
+            for (let year = currentYear - 5; year <= currentYear + 1; year++) {
+                $('#yearSelect').append(new Option(year, year));
+            }
+            $('#yearSelect').val(selectedYear); // Sunucudan gelen seçili yılı ayarla
+
+            // Ay Dropdown Menüsünü Doldur
+            const months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+            months.forEach((month, index) => {
+                $('#monthSelect').append(new Option(month, index + 1));
+            });
+            $('#monthSelect').val(selectedMonth); // Sunucudan gelen seçili ayı ayarla
+        });
+
+        // Silme onayı
+        function confirmDelete(url) {
+            if (confirm("UYARI!!! Bu kaydı silmek istediğinizden emin misiniz?")) {
+                window.location.href = url;
+            }
+        }
+
+        // Filtreleme işlemi
+        function applyFilters() {
+            var selectedYear = document.getElementById('yearSelect').value;
+            var selectedMonth = document.getElementById('monthSelect').value;
+            window.location.href = '@Url.Action("Giderler", "Admin")' + '?year=' + selectedYear + '&month=' + selectedMonth;
+        }
+
+        // Gider ekleme yönlendirmesi
+        function GiderGir() {
+            window.location.href = '@Url.Action("GiderGir", "Admin")';
+        }
+    </script>
+</main>
