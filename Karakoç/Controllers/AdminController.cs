@@ -47,7 +47,7 @@ namespace Karakoç.Controllers
                                                         y.Tarih.Value.Month == currentMonth &&
                                                         y.IsHalfWorked == true);
 
-            var mesaiYevmiyeCount = mesailer.Count(y => y.Tarih.Year == currentYear && y.Tarih.Month == currentMonth && y.IsWorked == true);
+            double mesaiYevmiyeCount = mesailer.Count(y => y.Tarih.Year == currentYear && y.Tarih.Month == currentMonth && y.IsWorked == true);
 
             // Bu ayki giderlerin toplamını hesapla
             var totalGiderAmount = giderler
@@ -201,16 +201,7 @@ namespace Karakoç.Controllers
             return RedirectToAction("CalisanList", "Admin");
         }
 
-        public IActionResult YevmiyeGiris()
-        {
-            if (!Control())
-            {
-                return RedirectToAction("Giris", "Login");
-            }
-
-            var calisanList = _adminManager.GetCalisansVerify();
-            return View(calisanList);
-        }
+       
 
         public IActionResult MesaiGiris()
         {
@@ -225,10 +216,10 @@ namespace Karakoç.Controllers
         }
 
         [HttpPost]
-        public IActionResult MesaiKaydet(DateTime Tarih, List<int> isWorked)
+        public IActionResult MesaiKaydet(DateTime Tarih, List<int> isWorked,  List<int> isWorkedCompany, List<int> isFullWorked)
         {
             // Öncelikle tüm çalışanları alın
-            if (_adminManager.KaydetMesai(Tarih, isWorked))
+            if (_adminManager.KaydetMesai(Tarih, isWorked,  isWorkedCompany,  isFullWorked))
             {
                 ViewBag.Onay = "Mesailer Kaydedildi";
                 return RedirectToAction("Index");
@@ -240,10 +231,23 @@ namespace Karakoç.Controllers
             }
         }
 
-        public IActionResult YevmiyeKaydet(DateTime Tarih, List<int> isWorked, List<int> isHalfWorked)
+
+        public IActionResult YevmiyeGiris()
+        {
+            if (!Control())
+            {
+                return RedirectToAction("Giris", "Login");
+            }
+
+            var calisanList = _adminManager.GetCalisansVerify();
+            return View(calisanList);
+        }
+
+        [HttpPost]
+        public IActionResult YevmiyeKaydet(DateTime Tarih, List<int> isWorked, List<int> isHalfWorked, List<int> isCompanyWorked)
         {
             // Öncelikle tüm çalışanları alın
-            if (_adminManager.KaydetYevmiye(Tarih, isWorked, isHalfWorked))
+            if (_adminManager.KaydetYevmiye(Tarih, isWorked, isHalfWorked, isCompanyWorked))
             {
                 ViewBag.Onay = "Yevmiyeler Kaydedildi";
                 return RedirectToAction("Index");
@@ -262,7 +266,7 @@ namespace Karakoç.Controllers
                 return RedirectToAction("Giris", "Login");
             }
 
-            return View(_adminManager.GetCalisansVerify());
+            return View(_adminManager.GetCalisans());
         }
 
         public class OdemeDto
@@ -287,6 +291,10 @@ namespace Karakoç.Controllers
         [HttpGet("/Admin/Odeme")]
         public async Task<IActionResult> GetOdeme()
         {
+            if (!Control())
+            {
+                return RedirectToAction("Giris", "Login");
+            }
             var odemeler = await _adminManager.GetOdeme();
 
             var odemeDtos = odemeler.Select(o => new OdemeDto
@@ -487,7 +495,7 @@ namespace Karakoç.Controllers
                     // Başlıklar
                     var titleCell = sheet.Range("A1:AJ1");
                     titleCell.Merge();
-                    titleCell.Value = "TURYEM YAPI ALÇI-SIVA PUNTAJ LİSTESİ";
+                    titleCell.Value = "KARAKOÇ İNŞAAT PUANTAJ LİSTESİ";
                     titleCell.Style.Font.Bold = true;
                     titleCell.Style.Font.FontSize = 18;
                     titleCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -655,6 +663,12 @@ namespace Karakoç.Controllers
                     return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Hakedis_{ay}_{yil}.xlsx");
                 }
             }
+        }
+
+        public IActionResult Santiyeler()
+        {
+            var santiyeler = _context.Santiyelers.ToList();
+            return View(santiyeler);
         }
 
         public bool Control()

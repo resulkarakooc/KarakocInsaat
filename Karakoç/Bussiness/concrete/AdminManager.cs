@@ -1,6 +1,7 @@
 ﻿using Humanizer;
 using Karakoç.Bussiness.abstracts;
 using Karakoç.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security;
@@ -123,50 +124,55 @@ namespace Karakoç.Bussiness.concrete
             return true;
         }
 
-        public bool KaydetMesai(DateTime Tarih, List<int> isWorked)
+        [HttpPost]
+        public bool KaydetMesai(DateTime Tarih, List<int> isWorked, List<int> isWorkedCompany, List<int> isFullWorked)
         {
             var calisanlar = _resulContext.Calisans.ToList();
 
             foreach (var calisan in calisanlar)
             {
-                
+
                 var mesai = _resulContext.Mesais.FirstOrDefault(y => y.CalisanId == calisan.CalısanId && y.Tarih == Tarih);
 
                 // Eğer kayıt varsa güncelle
-                if (mesai != null)
+                if (mesai != null) //var ise
                 {
-                    
+                    mesai.IsFullWorked = isFullWorked.Contains(calisan.CalısanId);
                     mesai.IsWorked = isWorked.Contains(calisan.CalısanId);
+                    mesai.IsWorkedCompany = isWorkedCompany.Contains(calisan.CalısanId);
                 }
-               
+
                 else
                 {
-                    
-                    if (isWorked.Contains(calisan.CalısanId))
+
+                    if (isWorked.Contains(calisan.CalısanId) || isWorkedCompany.Contains(calisan.CalısanId) || isFullWorked.Contains(calisan.CalısanId))
                     {
                         var yeniMesai = new Mesai
                         {
                             CalisanId = calisan.CalısanId,
                             Tarih = Tarih,
-                            IsWorked = true
+                            IsFullWorked = isFullWorked.Contains(calisan.CalısanId),
+                            IsWorked = isWorked.Contains(calisan.CalısanId),
+                            IsWorkedCompany = isWorkedCompany.Contains(calisan.CalısanId)
                         };
                         _resulContext.Mesais.Add(yeniMesai);
                     }
                 }
             }
 
-           
+
             _resulContext.SaveChanges();
 
             return true;
         }
 
 
-        public bool KaydetYevmiye(DateTime Tarih, List<int> isWorked, List<int> isHalfWorked)
+        public bool KaydetYevmiye(DateTime Tarih, List<int> isWorked, List<int> isHalfWorked, List<int> isCompanyWorked)
         {
             var calisanlar = _resulContext.Calisans.ToList();
             var workedSet = new HashSet<int>(isWorked);  // Daha hızlı erişim için HashSet
             var halfWorkedSet = new HashSet<int>(isHalfWorked);
+            var companyWorkedSet = new HashSet<int>(isCompanyWorked);
 
             foreach (var calisan in calisanlar)
             {
@@ -175,22 +181,26 @@ namespace Karakoç.Bussiness.concrete
 
                 bool calisanIsWorked = workedSet.Contains(calisan.CalısanId);
                 bool calisanIsHalfWorked = halfWorkedSet.Contains(calisan.CalısanId);
+                bool calisanIsCompanyWorked = companyWorkedSet.Contains(calisan.CalısanId);
 
                 // Kayıt var ise güncelle
                 if (yevmiye != null)
                 {
                     yevmiye.IsWorked = calisanIsWorked;
                     yevmiye.IsHalfWorked = calisanIsHalfWorked;
+                    yevmiye.IsWorkedCompany = calisanIsCompanyWorked;
                 }
                 // Kayıt yoksa ve gelen veri `isWorked` veya `isHalfWorked` true ise yeni kayıt oluştur
-                else if (calisanIsWorked || calisanIsHalfWorked)
+                else if (calisanIsWorked || calisanIsHalfWorked || calisanIsCompanyWorked)
                 {
                     var yeniYevmiye = new Yevmiyeler
                     {
                         CalisanId = calisan.CalısanId,
                         Tarih = Tarih,
                         IsWorked = calisanIsWorked,
-                        IsHalfWorked = calisanIsHalfWorked
+                        IsHalfWorked = calisanIsHalfWorked,
+                        IsWorkedCompany = calisanIsCompanyWorked,
+
                     };
                     _resulContext.Yevmiyelers.Add(yeniYevmiye);
                 }
@@ -227,12 +237,12 @@ namespace Karakoç.Bussiness.concrete
             {
                 _resulContext.Giderlers.RemoveRange(target.Giderlers);
             }
-            
+
             if (target.Mesais != null)
             {
                 _resulContext.Mesais.RemoveRange(target.Mesais);
             }
-            
+
             if (target.Yevmiyelers != null)
             {
                 _resulContext.Yevmiyelers.RemoveRange(target.Yevmiyelers);
@@ -262,11 +272,11 @@ namespace Karakoç.Bussiness.concrete
 
         public bool UpdateVerify(int id)
         {
-           var personel =  _resulContext.Calisans.FirstOrDefault(x => x.CalısanId == id);
+            var personel = _resulContext.Calisans.FirstOrDefault(x => x.CalısanId == id);
 
             if (personel == null) return false;
 
-            if(personel.Verify != null)
+            if (personel.Verify != null)
             {
                 if ((bool)personel.Verify)
                 {

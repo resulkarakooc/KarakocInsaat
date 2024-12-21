@@ -5,7 +5,7 @@ namespace Karakoç.Models
 {
     public partial class Giderler
     {
-        public int GiderId { get; set; } 
+        public int GiderId { get; set; }
         public string? Description { get; set; }
         public int Amount { get; set; }
         public int CalisanId { get; set; }

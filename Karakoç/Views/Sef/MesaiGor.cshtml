@@ -88,9 +88,24 @@
             const groupedData = groupDataByEmployee(allData, year, month);
             $.each(groupedData, function (calisan, yevmiyeData) {
                 tableHtml += `<tr><td>${calisan}</td>`;
+
                 for (let day = 1; day <= günSayısı; day++) {
                     const isWorked = yevmiyeData[day] && yevmiyeData[day].isWorked;
-                    tableHtml += `<td style="background-color: ${isWorked ? "blue" : "transparent"}"></td>`;
+                    const isFullWorked = yevmiyeData[day] && yevmiyeData[day].isFullWorked;
+                    const isWorkedCompany = yevmiyeData[day] && yevmiyeData[day].isWorkedCompany;
+
+                    if (isFullWorked === true) {
+                        tableHtml += `<td style="background-color: ${isFullWorked ? "blue" : "transparent"}"></td>`;
+                    }
+                    else if (isWorkedCompany === true) {
+                        tableHtml += `<td style="background-color: ${isWorkedCompany ? "green" : "transparent"}"></td>`;
+                    }
+                    else if (isWorked === true) {
+                        tableHtml += `<td style="background-color: ${isWorked ? "green" : "transparent"}"></td>`;
+                    } else {
+                        tableHtml += `<td style="background-color: ${isWorked ? "green" : "transparent"}"></td>`;
+                    }
+                    
                 }
                 tableHtml += `</tr>`;
             });
@@ -108,7 +123,14 @@
 
                 if (date.getFullYear() === year && date.getMonth() + 1 === month) {
                     if (!grouped[calisan]) grouped[calisan] = {};
-                    grouped[calisan][date.getDate()] = { isWorked: item.isWorked };
+                    grouped[calisan][date.getDate()] = {
+                        
+                        
+                        isWorked: item.isWorked,
+                        isFullWorked: item.isFullWorked,
+                        isWorkedCompany: item.isWorkedCompany
+
+                    };
                 }
             });
             return grouped;

@@ -82,7 +82,7 @@ public class LoginController : Controller
             }
             else if (HttpContext.Session.GetInt32("Authority") == 2) //Organizer
             {
-                return RedirectToAction("Giderler", "Organizer");
+                return RedirectToAction("Home", "Organizer");
             }
             else if (HttpContext.Session.GetInt32("Authority") == 3) //Admin
             {

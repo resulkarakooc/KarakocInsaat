@@ -7,12 +7,12 @@ namespace Karakoç.Models
 {
     public partial class ResulContext : DbContext
     {
-
         public virtual DbSet<Calisan> Calisans { get; set; } = null!;
         public virtual DbSet<GelirTablosu> GelirTablosus { get; set; } = null!;
         public virtual DbSet<Giderler> Giderlers { get; set; } = null!;
         public virtual DbSet<Mesai> Mesais { get; set; } = null!;
         public virtual DbSet<Odemeler> Odemelers { get; set; } = null!;
+        public virtual DbSet<Santiyeler> Santiyelers { get; set; } = null!;
         public virtual DbSet<Yevmiyeler> Yevmiyelers { get; set; } = null!;
 
         private readonly IConfiguration _configuration;
@@ -30,6 +30,7 @@ namespace Karakoç.Models
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Calisan>(entity =>
@@ -95,7 +96,11 @@ namespace Karakoç.Models
 
                 entity.Property(e => e.MesaiId).HasColumnName("MesaiID");
 
+                entity.Property(e => e.IsFullWorked).HasColumnName("isFullWorked");
+
                 entity.Property(e => e.IsWorked).HasColumnName("isWorked");
+
+                entity.Property(e => e.IsWorkedCompany).HasColumnName("isWorkedCompany");
 
                 entity.Property(e => e.Tarih).HasColumnType("date");
 
@@ -129,6 +134,23 @@ namespace Karakoç.Models
                     .HasConstraintName("FK_Odemeler_Calisan");
             });
 
+            modelBuilder.Entity<Santiyeler>(entity =>
+            {
+                entity.HasKey(e => e.SantiyeId);
+
+                entity.ToTable("Santiyeler");
+
+                entity.Property(e => e.SantiyeId).HasColumnName("SantiyeID");
+
+                entity.Property(e => e.BaslangicTarihi).HasColumnType("date");
+
+                entity.Property(e => e.BitisTarihi).HasColumnType("date");
+
+                entity.Property(e => e.SantiyeAdi).HasMaxLength(50);
+
+                entity.Property(e => e.SantiyeAdres).HasMaxLength(255);
+            });
+
             modelBuilder.Entity<Yevmiyeler>(entity =>
             {
                 entity.HasKey(e => e.YevmiyeId);
@@ -141,6 +163,10 @@ namespace Karakoç.Models
 
                 entity.Property(e => e.IsWorked).HasColumnName("isWorked");
 
+                entity.Property(e => e.IsWorkedCompany).HasColumnName("isWorkedCompany");
+
+                entity.Property(e => e.SantiyeId).HasColumnName("SantiyeID");
+
                 entity.Property(e => e.Tarih).HasColumnType("date");
 
                 entity.HasOne(d => d.Calisan)
@@ -148,6 +174,11 @@ namespace Karakoç.Models
                     .HasForeignKey(d => d.CalisanId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Yevmiyeler_Calisan");
+
+                entity.HasOne(d => d.Santiye)
+                    .WithMany(p => p.Yevmiyelers)
+                    .HasForeignKey(d => d.SantiyeId)
+                    .HasConstraintName("FK_Yevmiyeler_Santiyeler");
             });
 
             OnModelCreatingPartial(modelBuilder);

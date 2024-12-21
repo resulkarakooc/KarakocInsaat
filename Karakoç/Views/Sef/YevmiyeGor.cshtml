@@ -102,31 +102,34 @@
         function createTable(year, month) {
             const günSayısı = new Date(year, month, 0).getDate(); // Seçilen ayın gün sayısını al
             let tableHtml = `<table class="table table-bordered table-primary">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Çalışan</th>`;
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Çalışan</th>`;
             for (let i = 1; i <= günSayısı; i++) {
                 tableHtml += `<th>${i}</th>`; // Gün başlıkları
             }
             tableHtml += `   </tr>
-                                                    </thead>
-                                                    <tbody>`;
+                                                        </thead>
+                                                        <tbody>`;
 
             // Çalışan grupları oluştur
             const groupedData = groupDataByEmployee(allData, year, month);
             $.each(groupedData, function (calisan, yevmiyeData) {
                 tableHtml += `<tr><td>${calisan}</td>`;
+
                 for (let day = 1; day <= günSayısı; day++) {
                     const isWorked = yevmiyeData[day] && yevmiyeData[day].isWorked;
                     const isHalfWorked = yevmiyeData[day] && yevmiyeData[day].isHalfWorked;
+                    const isWorkedCompany = yevmiyeData[day] && yevmiyeData[day].isWorkedCompany;
 
-                    // Yarım çalıştıysa yeşil, tam çalıştıysa mavi
-                    if (isHalfWorked === true) {
-                        tableHtml += `<td style="background-color: green;"></td>`;
+                    // Her durumda mavi yapmak için sadece bir koşul yazıyoruz
+                    if (isWorkedCompany || isWorked || isHalfWorked) {
+                        tableHtml += `<td style="background-color: blue;"></td>`;
                     } else {
-                        tableHtml += `<td style="background-color: ${isWorked ? "blue" : "transparent"}"></td>`;
+                        tableHtml += `<td></td>`; // Hiçbir durum gerçekleşmezse boş hücre
                     }
                 }
+
                 tableHtml += `</tr>`;
             });
 
@@ -143,11 +146,12 @@
 
                 if (date.getFullYear() === year && date.getMonth() + 1 === month) {
                     if (!grouped[calisan]) grouped[calisan] = {};
-
+                    //
                     // Hem tam çalışma hem yarım çalışma bilgilerini ekle
                     grouped[calisan][date.getDate()] = {
                         isWorked: item.isWorked,
-                        isHalfWorked: item.isHalfWorked // Yarım çalışmayı da ekleyin
+                        isHalfWorked: item.isHalfWorked,
+                        isWorkedCompany: item.isWorkedCompany
                     };
                 }
             });

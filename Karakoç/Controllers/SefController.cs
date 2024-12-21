@@ -84,7 +84,6 @@ namespace Karakoç.Controllers
                     row++;
                 }
 
-
                 // Tablo oluşturma ve stil
                 var tableRange = worksheet.Range(4, 3, employees.Count + 4, 7);
                 var table = tableRange.CreateTable();
@@ -113,6 +112,7 @@ namespace Karakoç.Controllers
                 c.Tarih,
                 c.IsWorked,
                 c.IsHalfWorked,
+                c.IsWorkedCompany,
                 CalisanID = c.CalisanId,
                 CalisanAd = c.Calisan.Name,
                 CalisanSoyad = c.Calisan.Surname
@@ -161,6 +161,8 @@ namespace Karakoç.Controllers
 
                 c.Tarih,
                 c.IsWorked,
+                c.IsFullWorked,
+                c.IsWorkedCompany,
                 CalisanID = c.CalisanId,
                 CalisanAd = c.Calisan.Name,
                 CalisanSoyad = c.Calisan.Surname
@@ -310,13 +312,24 @@ namespace Karakoç.Controllers
                         sheet.Cell(startRow, 2).Value = "ALÇI-SIVA";
 
                         double amberCellsCount = 0;
+                        double fullCellsCount = 0;
                         for (int gun = 1; gun <= DateTime.DaysInMonth(yil, ay); gun++)
                         {
                             var record = data.FirstOrDefault(y => y.CalisanId == calisan.CalısanId && y.Tarih.Day == gun);
                             if (record != null)
                             {
                                 var cell = sheet.Cell(startRow, gun + 2);
-                                if (record.IsWorked == true)
+                                if(record.IsFullWorked == true)
+                                {
+                                    cell.Style.Fill.BackgroundColor = XLColor.Gray;
+                                    fullCellsCount++;
+                                }
+                                else if(record.IsWorkedCompany == true)
+                                {
+                                    cell.Style.Fill.BackgroundColor = XLColor.Amber;
+                                    amberCellsCount = amberCellsCount + (0.5);
+                                }
+                                else if (record.IsWorked == true)
                                 {
                                     cell.Style.Fill.BackgroundColor = XLColor.Amber;
                                     amberCellsCount = amberCellsCount + (0.5);
@@ -326,7 +339,7 @@ namespace Karakoç.Controllers
 
                         // Çalıştığı Gün Toplam sütunu
                         var totalCell = sheet.Cell(startRow, DateTime.DaysInMonth(yil, ay) + 3);
-                        totalCell.Value = isMesai ? amberCellsCount  : "Hata";
+                        totalCell.Value = isMesai ? amberCellsCount + fullCellsCount : amberCellsCount + fullCellsCount;
                         totalCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         startRow++;
                     }
@@ -364,10 +377,15 @@ namespace Karakoç.Controllers
                                     cell.Style.Fill.BackgroundColor = XLColor.Gray;
                                     greyCellsCount++;
                                 }
+                                else if(record.IsWorkedCompany == true)
+                                {
+                                    cell.Style.Fill.BackgroundColor = XLColor.Gray;
+                                    greyCellsCount++;
+                                }
                                 else if(record.IsHalfWorked == true)
                                 {
-                                    cell.Style.Fill.BackgroundColor = XLColor.Amber;
-                                    amberCellCount = amberCellCount + (0.5);
+                                    cell.Style.Fill.BackgroundColor = XLColor.Gray;
+                                    amberCellCount = amberCellCount + 1;
                                 }
                             }
                         }

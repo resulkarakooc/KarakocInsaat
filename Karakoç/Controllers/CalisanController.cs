@@ -1,5 +1,5 @@
 ﻿using Karakoç.Bussiness.concrete;
-using Karakoç.Models; // Modelin bulunduğu namespace
+using Karakoç.Models; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace Karakoç.Controllers

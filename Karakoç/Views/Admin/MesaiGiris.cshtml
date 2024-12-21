@@ -20,7 +20,10 @@
                 <thead>
                     <tr>
                         <th>Çalışan isim ve soyisim</th>
-                        <th>Çalıştı mı?</th>
+                        <th>Çalışan Yarım</th>
+                        <th>Şirket Yarım</th>
+                        <th>Şirket Tam</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +34,19 @@
                             <td>
                                 <input type="checkbox" name="isWorked" value="@calisan.CalısanId" />
                             </td>
+
+                            <td>
+                                <input type="checkbox" name="isWorkedCompany" value="@calisan.CalısanId" />
+                            </td>
+
+                            <td>
+                                <input type="checkbox" name="isFullWorked" value="@calisan.CalısanId" />
+                            </td>
+
                         </tr>
+
+
+
                     }
                 </tbody>
             </table>

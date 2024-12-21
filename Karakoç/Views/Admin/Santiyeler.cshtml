@@ -1,0 +1,51 @@
+﻿@model List<Santiyeler>
+@{
+    ViewData["Title"] = "Santiyeler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int a = 1;
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Şantiyeler</h2>
+
+
+        <table class="table table-bordered table-primary">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Firma</th>
+                    <th>Adres</th>
+                    <th>Başlama Tarihi</th>
+                    <th>Bitiş Tarihi</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var x in Model)
+
+                {
+                    <tr>
+                        <td>@a</td>
+                        <td>@x.SantiyeAdi</td>
+                        <td>@x.SantiyeAdres</td>
+                        <td>@x.BaslangicTarihi</td>
+                        @if (x.BitisTarihi != null)
+                        {
+                            <td>@x.BitisTarihi </td>
+                        }
+                        else
+                        {
+                            <td>Devam Ediyor</td>
+                        }
+                    </tr>
+                    a++;
+                }
+            </tbody>
+        </table>
+        
+    </div>
+</main>
+
+
+

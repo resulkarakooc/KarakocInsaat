@@ -1,45 +1,4 @@
-﻿@* @model List<Calisan>
-@{
-    ViewData["Title"] = "YevmiyeGiris";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
-
-<main class="main users chart-page" id="skip-target">
-    <div class="container">
-        <h2 class="main-title">Çalışanların Yevmiye Bilgisi</h2>
-
-        <form method="post" action="/Admin/YevmiyeKaydet">
-            <div class="form-group" style="text-align: right; margin-bottom: 20px;">
-                <label class="main-title" for="tarih">Tarih Seçin:</label>
-                <input type="date" id="tarih" name="Tarih" class="form-control" required style="display: inline-block; width: 200px;" />
-            </div>
-
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Çalışan isim ve soyisim</th>
-                        <th>Çalıştı mı?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var calisan in Model)
-                    {
-                        <tr>
-                            <td>@calisan.Name @calisan.Surname</td>
-                            <td>
-                                <input type="checkbox" name="isWorked" value="@calisan.CalısanId" />
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <button type="submit" class="btn btn-primary">Kaydet</button>
-        </form>
-    </div>
-</main>
- *@
-
-@model List<Calisan>
+﻿@model List<Calisan>
 @{
     ViewData["Title"] = "YevmiyeGiris";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -61,6 +20,7 @@
                         <th>Çalışan isim ve soyisim</th>
                         <th>Tam Çalıştı mı?</th>
                         <th>Yarım Çalıştı mı?</th>
+                        <th>Şirket</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +35,9 @@
                             <td>
                                 <input type="checkbox" id="isHalfWorked_@calisan.CalısanId" name="isHalfWorked" value="@calisan.CalısanId"
                                        onclick="selectOnlyOne(this, 'isWorked_@calisan.CalısanId')" />
+                            </td>
+                            <td>
+                                <input type="checkbox" id="isCompanyWorked_@calisan.CalısanId" name="isCompanyWorked" value="@calisan.CalısanId" />
                             </td>
                         </tr>
                     }
